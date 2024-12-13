@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงเวลาทำงาน</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('https://via.placeholder.com/1920x1080?text=Stratex+Background') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            border: 2px solid #00d4ff;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 4px 10px rgba(0, 212, 255, 0.5);
+        }
+        .time-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+        }
+        .label {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            border: 2px solid #00d4ff;
+            border-radius: 5px;
+            text-align: center;
+            background: #001f3f;
+            color: #fff;
+        }
+        button {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .log-time {
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+        }
+        .log-time:hover {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+        }
+        .log-out-time {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+        }
+        .log-out-time:hover {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+        }
+        .go-back {
+            background: linear-gradient(45deg, #1c92d2, #f2fcfe);
+            color: black;
+        }
+        .go-back:hover {
+            background: linear-gradient(45deg, #f2fcfe, #1c92d2);
+        }
+        .pea {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="main-container">
+        <div class="pea">PEA</div>
+        <div class="time-display" id="current-time">00:00 AM</div>
+        <div class="label">กรอกรหัสพนักงาน</div>
+        <input type="text" id="employee-id" placeholder="รหัสพนักงาน">
+        <button class="log-time" onclick="logTime()">ลงเวลา</button>
+        <button class="log-out-time" onclick="logOutTime()">ลงเวลากลับ</button>
+        <button class="go-back" onclick="goBack()">ย้อนกลับ</button>
+    </div>
+
+    <div class="container" id="confirmation-container" style="display: none;">
+        <div class="pea">PEA</div>
+        <div class="time-display" id="confirmation-time">00:00 AM</div>
+        <div class="label">ยืนยันการลงเวลา</div>
+        <div id="confirmation-employee-id">&lt;employee_id&gt;</div>
+        <button class="go-back" onclick="goToMain()">กลับหน้าหลัก</button>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours() % 12 || 12;
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+            document.getElementById('current-time').textContent = `${hours}:${minutes} ${ampm}`;
+            document.getElementById('confirmation-time').textContent = `${hours}:${minutes} ${ampm}`;
+        }
+
+        function logTime() {
+            const employeeId = document.getElementById('employee-id').value;
+            if (employeeId) {
+                document.getElementById('confirmation-employee-id').textContent = employeeId;
+                document.getElementById('main-container').style.display = 'none';
+                document.getElementById('confirmation-container').style.display = 'block';
+            } else {
+                alert('กรุณากรอกรหัสพนักงาน!');
+            }
+        }
+
+        function logOutTime() {
+            const employeeId = document.getElementById('employee-id').value;
+            if (employeeId) {
+                document.getElementById('confirmation-employee-id').textContent = employeeId + ' (ลงเวลากลับ)';
+                document.getElementById('main-container').style.display = 'none';
+                document.getElementById('confirmation-container').style.display = 'block';
+            } else {
+                alert('กรุณากรอกรหัสพนักงาน!');
+            }
+        }
+
+        function goBack() {
+            alert('กลับไปยังหน้าก่อนหน้า');
+        }
+
+        function goToMain() {
+            document.getElementById('main-container').style.display = 'block';
+            document.getElementById('confirmation-container').style.display = 'none';
+            document.getElementById('employee-id').value = '';
+        }
+
+        // อัพเดตเวลาทุกวินาที
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
